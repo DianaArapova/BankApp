@@ -4,6 +4,7 @@ services:
   web:
     build: ./src
     command: uvicorn app.asgi:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    restart: on-failure:3
     volumes:
       - ./src/:/usr/src/app/
     ports:
@@ -13,6 +14,7 @@ services:
 
   db:
     image: postgres:12.1-alpine
+    restart: on-failure:3
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -22,6 +24,7 @@ services:
 
   nginx:
     build: ./nginx
+    restart: on-failure:3
     volumes:
       - static_volume:/home/app/web/staticfiles
     ports:

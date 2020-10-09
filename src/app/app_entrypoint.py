@@ -26,7 +26,6 @@ def create_app() -> FastAPI:
     app.router.lifespan.shutdown_handlers.append(
         [
             database.disconnect,
-            # asyncio.get_running_loop().close,
         ]
     )
 
