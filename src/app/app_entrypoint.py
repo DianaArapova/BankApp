@@ -1,11 +1,11 @@
 import asyncio
 
-from fastapi import FastAPI, APIRouter
+from fastapi import APIRouter, FastAPI
 
-from app.models import accounts as account_models
 from app.db import database
-from app.views import ping, accounts
+from app.models import accounts as account_models
 from app.settings import AppSettings
+from app.views import accounts, ping
 
 
 def create_app() -> FastAPI:
@@ -18,7 +18,9 @@ def create_app() -> FastAPI:
     app.router.lifespan.startup_handlers.extend(
         [
             database.connect,
-            lambda: asyncio.get_running_loop().create_task(accounts.clear_holds(app_settings.clear_holds_delay))
+            lambda: asyncio.get_running_loop().create_task(
+                accounts.clear_holds(app_settings.clear_holds_delay)
+            ),
         ]
     )
     app.router.lifespan.shutdown_handlers.append(
@@ -34,10 +36,7 @@ def create_app() -> FastAPI:
 def create_ping_router() -> APIRouter:
     ping_router = APIRouter()
     ping_router.add_api_route(
-        "/ping/",
-        ping.can_we_enjoy,
-        methods=["GET"],
-        response_model=str
+        "/ping/", ping.can_we_enjoy, methods=["GET"], response_model=str
     )
     return ping_router
 
@@ -46,10 +45,8 @@ def create_account_router() -> APIRouter:
     account_router = APIRouter()
     routers_info = [
         ("/open/", accounts.create_account, "POST"),
-
         ("/status/", accounts.read_all_status, "GET"),
         ("/status/{account_uuid}/", accounts.read_status, "GET"),
-
         ("/close/", accounts.close_account, "PUT"),
         ("/add/", accounts.add_to_balance, "PUT"),
         ("/substract/", accounts.substract_balance, "PUT"),
@@ -60,7 +57,7 @@ def create_account_router() -> APIRouter:
             path,
             endpoint,
             methods=[method],
-            response_model=account_models.AccountResponse
+            response_model=account_models.AccountResponse,
         )
 
     return account_router

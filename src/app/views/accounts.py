@@ -1,12 +1,12 @@
-import logging
 import asyncio
+import logging
 
 from fastapi import HTTPException
 
-from app.models.accounts import (OpenAccountRequest, CloseAccountRequest, ChangeAccountBalanceRequest,
-                                 AccountSchema, AccountDBSchema, AccountResponse)
 import app.db_queries.accounts as db_query_executor
-
+from app.models.accounts import (AccountDBSchema, AccountResponse,
+                                 AccountSchema, ChangeAccountBalanceRequest,
+                                 CloseAccountRequest, OpenAccountRequest)
 
 logger = logging.getLogger(__name__)
 
@@ -28,9 +28,7 @@ async def create_account(request: OpenAccountRequest) -> AccountResponse:
     return AccountResponse(
         result=True,
         addition=[account],
-        description={
-            "message": "Account created"
-        },
+        description={"message": "Account created"},
     )
 
 
@@ -48,9 +46,7 @@ async def close_account(request: CloseAccountRequest) -> AccountResponse:
     return AccountResponse(
         result=True,
         addition=[account],
-        description={
-            "message": f"Account {request.account_uuid} closed"
-        },
+        description={"message": f"Account {request.account_uuid} closed"},
     )
 
 
@@ -82,13 +78,15 @@ async def substract_balance(request: ChangeAccountBalanceRequest) -> AccountResp
 
     result = account.balance - account.holds - request.change_amount
     if result < 0:
-        logger.info(f"Decreasing failed (account_uuid: {request.account_uuid}, expected_balance: {result})")
+        logger.info(
+            f"Decreasing failed (account_uuid: {request.account_uuid}, expected_balance: {result})"
+        )
         return AccountResponse(
             result=False,
             addition=[account],
             description={
                 "message": f"Operation is prohibited, there is not enough money in the account {request.account_uuid}"
-            }
+            },
         )
 
     account.holds += request.change_amount
@@ -101,29 +99,28 @@ async def substract_balance(request: ChangeAccountBalanceRequest) -> AccountResp
         addition=[account],
         description={
             "message": f"Substraction from {request.account_uuid} account is made"
-        })
+        },
+    )
 
 
 async def read_all_status() -> AccountResponse:
     accounts = await db_query_executor.get_all()
 
     return AccountResponse(
-        result=True,
-        addition=accounts,
-        description={
-            "message": f"Get all accounts"
-        })
+        result=True, addition=accounts, description={"message": f"Get all accounts"}
+    )
 
 
 async def read_status(account_uuid: str) -> AccountResponse:
     account = await db_query_executor.get(account_uuid)
-    raise_http_exception_on_invalid_accounts(account, account_uuid, validate_account_status=False)
+    raise_http_exception_on_invalid_accounts(
+        account, account_uuid, validate_account_status=False
+    )
     return AccountResponse(
         result=True,
         addition=[account],
-        description={
-            "message": f"Get account {account_uuid}"
-        })
+        description={"message": f"Get account {account_uuid}"},
+    )
 
 
 async def clear_holds(delay: float) -> None:
@@ -137,7 +134,7 @@ async def clear_holds(delay: float) -> None:
 def raise_http_exception_on_invalid_accounts(
     account: AccountDBSchema,
     expected_account_uuid: str,
-    validate_account_status: bool = True
+    validate_account_status: bool = True,
 ) -> None:
     if not account:
         error_message = f"Account {expected_account_uuid} was not found"
@@ -147,10 +144,8 @@ def raise_http_exception_on_invalid_accounts(
             detail=AccountResponse(
                 result=False,
                 addition=[],
-                description={
-                    "message": error_message
-                },
-            ).dict()
+                description={"message": error_message},
+            ).dict(),
         )
 
     if validate_account_status and not account.status:
@@ -161,8 +156,6 @@ def raise_http_exception_on_invalid_accounts(
             detail=AccountResponse(
                 result=False,
                 addition=[account],
-                description={
-                    "message": error_message
-                },
-            ).dict()
+                description={"message": error_message},
+            ).dict(),
         )

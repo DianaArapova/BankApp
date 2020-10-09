@@ -1,5 +1,6 @@
-from pydantic import BaseModel, conint
 from typing import Dict, List
+
+from pydantic import BaseModel, conint
 
 
 class OpenAccountRequest(BaseModel):

@@ -1,9 +1,8 @@
-from databases import Database
-from sqlalchemy import Column, Integer, MetaData, String, Boolean
 import sqlalchemy as sa
+from databases import Database
+from sqlalchemy import Boolean, Column, Integer, MetaData, String
 
 from app.settings import DBSettings
-
 
 metadata = MetaData()
 
