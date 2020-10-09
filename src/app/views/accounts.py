@@ -35,11 +35,12 @@ async def create_account(request: OpenAccountRequest) -> AccountResponse:
 async def close_account(request: CloseAccountRequest) -> AccountResponse:
     logger.info(f"Closing account (request: {request})")
 
+    account_uuid = await db_query_executor.close_account(request)
     account = await db_query_executor.get(request.account_uuid)
-    raise_http_exception_on_invalid_accounts(account, request.account_uuid)
 
-    account.status = False
-    await db_query_executor.update(account)
+    if not account_uuid:
+        raise_http_exception_on_invalid_accounts(account, request.account_uuid)
+        throw_http_exception_because_of_modified_account(account)
 
     logger.info(f"Closed account (account: {account})")
 
@@ -53,11 +54,12 @@ async def close_account(request: CloseAccountRequest) -> AccountResponse:
 async def add_to_balance(request: ChangeAccountBalanceRequest) -> AccountResponse:
     logger.info(f"Increasing balance (request: {request})")
 
+    account_uuid = await db_query_executor.increase_balance(request)
     account = await db_query_executor.get(request.account_uuid)
-    raise_http_exception_on_invalid_accounts(account, request.account_uuid)
 
-    account.balance += request.change_amount
-    await db_query_executor.update(account)
+    if not account_uuid:
+        raise_http_exception_on_invalid_accounts(account, request.account_uuid)
+        throw_http_exception_because_of_modified_account(account)
 
     logger.info(f"Increased balance (account: {account})")
 
@@ -73,29 +75,31 @@ async def add_to_balance(request: ChangeAccountBalanceRequest) -> AccountRespons
 async def substract_balance(request: ChangeAccountBalanceRequest) -> AccountResponse:
     logger.info(f"Try decreasing balance (request: {request})")
 
+    account_uuid = await db_query_executor.decrease_balance(request)
     account = await db_query_executor.get(request.account_uuid)
-    raise_http_exception_on_invalid_accounts(account, request.account_uuid)
 
-    result = account.balance - account.holds - request.change_amount
-    if result < 0:
-        logger.info(
-            f"Decreasing failed (account_uuid: {request.account_uuid}, expected_balance: {result})"
-        )
-        return AccountResponse(
-            result=False,
-            addition=[account],
-            description={
-                "message": f"Operation is prohibited, there is not enough money in the account {request.account_uuid}"
-            },
-        )
+    if not account_uuid:
+        raise_http_exception_on_invalid_accounts(account, request.account_uuid)
+        result = account.balance - account.holds - request.change_amount
 
-    account.holds += request.change_amount
-    await db_query_executor.update(account)
+        if result < 0:
+            error_message = f"Operation is prohibited, there is not enough money in the account {request.account_uuid}"
+            logger.error(error_message)
+            raise HTTPException(
+                status_code=400,
+                detail=AccountResponse(
+                    result=False,
+                    addition=[account],
+                    description={"message": error_message},
+                ).dict(),
+            )
+        else:
+            throw_http_exception_because_of_modified_account(account)
 
     logger.info(f"Decreased balance (account: {account})")
 
     return AccountResponse(
-        result=False,
+        result=True,
         addition=[account],
         description={
             "message": f"Substraction from {request.account_uuid} account is made"
@@ -159,3 +163,19 @@ def raise_http_exception_on_invalid_accounts(
                 description={"message": error_message},
             ).dict(),
         )
+
+
+def throw_http_exception_because_of_modified_account(account: AccountDBSchema) -> None:
+    error_message = (
+        f"The account {account.account_uuid} was modified during this operation."
+        f"Try again, please :)"
+    )
+    logger.error(error_message)
+    raise HTTPException(
+        status_code=409,
+        detail=AccountResponse(
+            result=False,
+            addition=[account],
+            description={"message": error_message},
+        ).dict(),
+    )
