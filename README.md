@@ -12,6 +12,10 @@ To launch an application that safely manages accounts, run the following command
 
 ``bash startup.sh``
 
+Continue exploring the application at:
+
+``http://localhost:1337/docs``
+
 ## Table of contents
 
 * [Technologies](https://github.com/DianaArapova/BankApp/blob/main/docs/technologies.md)
