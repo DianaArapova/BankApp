@@ -4,7 +4,7 @@ Application for managing accounts developed in Python3.8 using [FastAPI](https:/
 
 [Postgres](https://www.postgresql.org/) is used as database for storing data.
 
-![Image alt](https://github.com/DianaArapova/MyBank_back/blob/master/docs/readme_data/start_page.png)
+![Image alt](https://github.com/DianaArapova/BankApp/blob/master/docs/readme_data/start_page.png)
 
 ## Setup
 
@@ -14,6 +14,6 @@ To launch an application that safely manages accounts, run the following command
 
 ## Table of contents
 
-* [Technologies](https://github.com/DianaArapova/MyBank_back/blob/master/docs/technologies.md)
+* [Technologies](https://github.com/DianaArapova/BankApp/blob/master/docs/technologies.md)
 
-* [Screenshots](https://github.com/DianaArapova/MyBank_back/blob/master/docs/screenshots.md)
+* [Screenshots](https://github.com/DianaArapova/BankApp/blob/master/docs/screenshots.md)
