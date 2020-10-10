@@ -4,7 +4,7 @@ Application for managing accounts developed in Python3.8 using [FastAPI](https:/
 
 [Postgres](https://www.postgresql.org/) is used as database for storing data.
 
-![Image alt](https://github.com/DianaArapova/BankApp/blob/master/docs/readme_data/start_page.png)
+![Start page](https://github.com/DianaArapova/BankApp/blob/master/docs/readme_data/start_page.png)
 
 ## Setup
 
