@@ -16,7 +16,7 @@
 
 ![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/add.png)
 
-![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/after_adddition.png)
+![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/after_addition.png)
 
 * Spend money from account. For example for a delicious breakfast in Simple :)
 
@@ -41,10 +41,10 @@
 
 * Working with closed account
 
-![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/add_to_closed_account.png)
+![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/add_to_close_account.png)
 
 * Attempt to debit an unavailable amount of money from the account
 
-![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/wrong_substraction.png)
+![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/wrong_substaction.png)
 
 

@@ -6,7 +6,7 @@
 
 * PostgeSQL
 
-![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/postgres.png)
+![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/postgres_data.png)
 
 # Python libraries
 
