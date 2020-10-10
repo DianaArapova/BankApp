@@ -22,7 +22,7 @@
 
 ![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/substract.png)
 
-![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/after_substraction.png)
+![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/after_subtraction.png)
 
 ![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/afte_clearing_holds.png)
 
