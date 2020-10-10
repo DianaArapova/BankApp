@@ -86,8 +86,9 @@ async def substract_balance(request: ChangeAccountBalanceRequest) -> AccountResp
             error_message = f"Operation is prohibited, there is not enough money in the account {request.account_uuid}"
             logger.error(error_message)
             raise HTTPException(
-                status_code=400,
+                status_code=403,
                 detail=AccountResponse(
+                    status=403,
                     result=False,
                     addition=[account],
                     description={"message": error_message},
@@ -146,6 +147,7 @@ def raise_http_exception_on_invalid_accounts(
         raise HTTPException(
             status_code=404,
             detail=AccountResponse(
+                status=404,
                 result=False,
                 addition=[],
                 description={"message": error_message},
@@ -156,8 +158,9 @@ def raise_http_exception_on_invalid_accounts(
         error_message = f"Account {expected_account_uuid} was already closed"
         logger.error(error_message)
         raise HTTPException(
-            status_code=400,
+            status_code=403,
             detail=AccountResponse(
+                status=403,
                 result=False,
                 addition=[account],
                 description={"message": error_message},
@@ -174,6 +177,7 @@ def throw_http_exception_because_of_modified_account(account: AccountDBSchema) -
     raise HTTPException(
         status_code=409,
         detail=AccountResponse(
+            status=409,
             result=False,
             addition=[account],
             description={"message": error_message},

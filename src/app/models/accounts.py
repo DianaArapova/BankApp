@@ -28,6 +28,7 @@ class AccountDBSchema(AccountSchema):
 
 
 class AccountResponse(BaseModel):
+    status: int = 200
     result: bool
     addition: List[AccountDBSchema]
     description: Dict[str, str]
