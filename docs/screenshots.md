@@ -1,10 +1,10 @@
 # Correct usage scenarios
 
-* View all accounts: ``http://localhost:1337/accounts/status/``
+* View all accounts: ``http://localhost:1337/accounts/status``
 
 ![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/status_all.png)
 
-* Add new account: ``http --json POST http://localhost:1337/accounts/open/ full_name="Арапова Диана Владимировна"``
+* Add new account: ``http --json POST http://localhost:1337/accounts/open full_name="Арапова Диана Владимировна"``
 
 ![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/add.png)
 
@@ -12,7 +12,7 @@
 
 ![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/status_by_uuid.png)
 
-* Add money to account: ``http --json PUT http://localhost:1337/accounts/add/ account_uuid="de891155-3dc3-4fa7-a5ef-b711f27ead51" change_amount=1000``
+* Add money to account: ``http --json PUT http://localhost:1337/accounts/add account_uuid="de891155-3dc3-4fa7-a5ef-b711f27ead51" change_amount=1000``
 
 ![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/add.png)
 

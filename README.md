@@ -4,8 +4,6 @@ Application for managing accounts developed in Python3.8 using [FastAPI](https:/
 
 [PostgreSQL](https://www.postgresql.org/) is used as database for storing data.
 
-![Start page](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/start_page.png)
-
 ## Setup
 
 To launch an application that safely manages accounts, run the following command in the root directory:
@@ -15,6 +13,8 @@ To launch an application that safely manages accounts, run the following command
 Continue exploring the application at:
 
 ``http://localhost:1337/docs``
+
+![Start page](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/start_page.png)
 
 ## Table of contents
 
