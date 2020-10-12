@@ -47,4 +47,6 @@
 
 ![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/wrong_substaction.png)
 
+# Logs in application
 
+![Screen](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/beautiful_logs.png)
