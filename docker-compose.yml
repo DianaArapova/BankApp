@@ -11,6 +11,8 @@ services:
       - 8002:8000
     environment:
       - DATABASE_URL=postgresql://user:password@db/db_dev
+    depends_on:
+      - db
 
   db:
     image: postgres:12.1-alpine

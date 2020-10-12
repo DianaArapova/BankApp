@@ -4,7 +4,6 @@ from fastapi import APIRouter, FastAPI
 
 from app.db import database
 from app.models import accounts as account_models
-from app.settings import AppSettings
 from app.views import accounts, ping
 
 
@@ -14,26 +13,25 @@ def create_app() -> FastAPI:
     app.include_router(create_ping_router(), prefix="", tags=["ping"])
     app.include_router(create_account_router(), prefix="/accounts", tags=["accounts"])
 
-    app_settings = AppSettings()
-
-    if not app_settings.testing:
-        app.router.lifespan.startup_handlers.extend(
-            [
-                database.connect,
-                lambda: asyncio.get_running_loop().create_task(
-                    accounts.clear_holds(app_settings.clear_holds_delay)
-                ),
-            ]
-        )
-
-        app.router.lifespan.shutdown_handlers.append(
-            [
-                database.disconnect,
-                asyncio.get_running_loop().stop,
-            ]
-        )
-
     return app
+
+
+def configure_app_handlers(app, app_settings):
+    app.router.lifespan.startup_handlers.extend(
+        [
+            database.connect,
+            lambda: asyncio.get_running_loop().create_task(
+                accounts.clear_holds(app_settings.clear_holds_delay)
+            ),
+        ]
+    )
+
+    app.router.lifespan.shutdown_handlers.append(
+        [
+            database.disconnect,
+            asyncio.get_running_loop().stop,
+        ]
+    )
 
 
 def create_ping_router() -> APIRouter:

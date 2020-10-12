@@ -1,25 +1,32 @@
 version: '3.7'
 
 services:
-  web:
+  test:
     build: ./src
     command: pytest
     volumes:
       - ./src/:/usr/src/app/
-    ports:
-      - 8002:8000
     environment:
-      - DATABASE_URL=postgresql://user_test:password_test@db/db_test
-      - APP_TESTING=true
+      - DATABASE_URL=postgresql://user_test:password_test@db-test/db_test
+    depends_on:
+      - db-test
+    networks:
+      - db_nw
 
-  db:
+  db-test:
     image: postgres:12.1-alpine
+    networks:
+      - db_nw
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_test_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=user_test
       - POSTGRES_PASSWORD=password_test
       - POSTGRES_DB=db_test
 
 volumes:
-  postgres_data:
+  postgres_test_data:
+
+networks:
+  db_nw:
+    driver: bridge

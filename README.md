@@ -16,11 +16,17 @@ Continue exploring the application at:
 
 ![Start page](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/start_page.png)
 
+To stop application, run the command:
+
+``bash stop_app.sh``
+
 ## Testing
 
 To run the tests, run the command:
 
 ``bash run_tests.sh``
+
+You can run tests, when application is working :)
 
 ![Start page](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/testing.png)
 
