@@ -22,7 +22,7 @@ class DBSettings(BaseSettings):
 
 
 class AppSettings(BaseSettings):
-    clear_holds_delay: float = 10 * 60
+    clear_holds_delay: int = 10 * 60
     testing: bool = False
 
     class Config:

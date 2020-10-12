@@ -139,7 +139,7 @@ async def clear_holds_once() -> AccountResponse:
     )
 
 
-async def clear_holds(delay: float) -> None:
+async def clear_holds(delay: int) -> None:
     while True:
         logger.info("Start clearing holds")
         await db_query_executor.clear_holds()

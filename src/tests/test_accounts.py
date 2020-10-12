@@ -78,6 +78,13 @@ def test_get_account_by_uuid(test_app: TestClient, test_db: Database) -> None:
         assert response_body["addition"] == [account.dict()]
 
 
+def test_get_account_by_wrong_uuid(test_app: TestClient, test_db: Database) -> None:
+    response = test_app.get(
+        f"/accounts/status/wrong_uuid",
+    )
+    assert response.status_code == 404
+
+
 def test_get_all_account_by_uuid(test_app: TestClient, test_db: Database) -> None:
     accounts = [create_account(test_app, str(i), i).dict() for i in range(1, 20)]
 
