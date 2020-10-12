@@ -1,9 +1,5 @@
 from starlette.testclient import TestClient
 
-from app.asgi import app
-
-client = TestClient(app)
-
 
 def test_ping(test_app):
     response = test_app.get("/ping")

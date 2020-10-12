@@ -16,6 +16,15 @@ Continue exploring the application at:
 
 ![Start page](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/start_page.png)
 
+## Testing
+
+To run the tests, run the command:
+
+``bash run_tests.sh``
+
+![Start page](https://github.com/DianaArapova/BankApp/blob/main/docs/screens/testing.png)
+
+
 ## Table of contents
 
 * [Technologies](https://github.com/DianaArapova/BankApp/blob/main/docs/technologies.md)

@@ -14,9 +14,16 @@ class DBSettings(BaseSettings):
         metadata.bind = create_engine(self.url)
         metadata.create_all()
 
+    @staticmethod
+    def teardown_db() -> None:
+        from app.db import metadata
+
+        metadata.drop_all()
+
 
 class AppSettings(BaseSettings):
     clear_holds_delay: float = 10 * 60
+    testing: bool = False
 
     class Config:
         env_prefix = "APP_"

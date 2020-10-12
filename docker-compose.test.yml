@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  web:
+    build: ./src
+    command: pytest
+    volumes:
+      - ./src/:/usr/src/app/
+    ports:
+      - 8002:8000
+    environment:
+      - DATABASE_URL=postgresql://user_test:password_test@db/db_test
+      - APP_TESTING=true
+
+  db:
+    image: postgres:12.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=user_test
+      - POSTGRES_PASSWORD=password_test
+      - POSTGRES_DB=db_test
+
+volumes:
+  postgres_data:

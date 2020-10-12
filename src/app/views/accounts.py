@@ -128,6 +128,17 @@ async def read_status(account_uuid: str) -> AccountResponse:
     )
 
 
+async def clear_holds_once() -> AccountResponse:
+    logger.info("Start clearing holds")
+    await db_query_executor.clear_holds()
+    logger.info("Finish clearing holds")
+    return AccountResponse(
+        result=True,
+        addition=[],
+        description={"message": f"Holds are cleaned"},
+    )
+
+
 async def clear_holds(delay: float) -> None:
     while True:
         logger.info("Start clearing holds")
