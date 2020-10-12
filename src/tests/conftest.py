@@ -1,8 +1,9 @@
 import asyncio
+
 import pytest
-from starlette.testclient import TestClient
 from databases import Database
 from fastapi import APIRouter
+from starlette.testclient import TestClient
 
 
 @pytest.fixture(scope="module")
@@ -10,7 +11,9 @@ def test_app() -> TestClient:
     from app.app_entrypoint import create_app
 
     app = create_app()
-    app.include_router(create_router_for_testing(), prefix="/account_testing", tags=["account_testing"])
+    app.include_router(
+        create_router_for_testing(), prefix="/account_testing", tags=["account_testing"]
+    )
 
     client = TestClient(app)
     yield client
@@ -26,9 +29,10 @@ def event_loop():
 @pytest.fixture()
 @pytest.mark.asyncio
 async def test_db(test_app, event_loop) -> Database:
-    from app.settings import DBSettings
     from sqlalchemy import create_engine
-    from app.db import metadata, database
+
+    from app.db import database, metadata
+    from app.settings import DBSettings
 
     db_settings = DBSettings()
     print(db_settings)
@@ -45,8 +49,8 @@ async def test_db(test_app, event_loop) -> Database:
 
 
 def create_router_for_testing() -> APIRouter:
-    from app.views import accounts
     import app.models.accounts as account_models
+    from app.views import accounts
 
     router_for_testing = APIRouter()
 

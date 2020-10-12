@@ -4,12 +4,11 @@ from starlette.testclient import TestClient
 from app.models import accounts as accounts_models
 
 
-def create_account(test_app: TestClient, full_name: str, start_money: int = 0) -> accounts_models.AccountDBSchema:
+def create_account(
+    test_app: TestClient, full_name: str, start_money: int = 0
+) -> accounts_models.AccountDBSchema:
     open_account_request = accounts_models.OpenAccountRequest(full_name=full_name)
-    response = test_app.post(
-        "/accounts/open",
-        data=open_account_request.json()
-    )
+    response = test_app.post("/accounts/open", data=open_account_request.json())
     response_body = dict(response.json())
     account = accounts_models.AccountDBSchema(**response_body["addition"][0])
 
@@ -17,13 +16,9 @@ def create_account(test_app: TestClient, full_name: str, start_money: int = 0) -
         return account
 
     add_request = accounts_models.ChangeAccountBalanceRequest(
-        account_uuid=account.account_uuid,
-        change_amount=start_money
+        account_uuid=account.account_uuid, change_amount=start_money
     )
-    response = test_app.put(
-        "/accounts/add",
-        data=add_request.json()
-    )
+    response = test_app.put("/accounts/add", data=add_request.json())
     response_body = dict(response.json())
     account = accounts_models.AccountDBSchema(**response_body["addition"][0])
 
@@ -31,12 +26,12 @@ def create_account(test_app: TestClient, full_name: str, start_money: int = 0) -
 
 
 def create_closed_account(
-        test_app: TestClient,
-        full_name: str,
-        start_money: int = 0
+    test_app: TestClient, full_name: str, start_money: int = 0
 ) -> accounts_models.AccountDBSchema:
     account = create_account(test_app, full_name, start_money)
-    close_request = accounts_models.CloseAccountRequest(account_uuid=account.account_uuid)
+    close_request = accounts_models.CloseAccountRequest(
+        account_uuid=account.account_uuid
+    )
 
     response = test_app.put(
         "/accounts/close",
@@ -46,10 +41,10 @@ def create_closed_account(
     return accounts_models.AccountDBSchema(**response_body["addition"][0])
 
 
-def get_account(test_app: TestClient, account_uuid: str) -> accounts_models.AccountDBSchema:
-    response = test_app.get(
-        f"accounts/status/{account_uuid}"
-    )
+def get_account(
+    test_app: TestClient, account_uuid: str
+) -> accounts_models.AccountDBSchema:
+    response = test_app.get(f"accounts/status/{account_uuid}")
     response_body = dict(response.json())
     return accounts_models.AccountDBSchema(**response_body["addition"][0])
 
@@ -57,10 +52,7 @@ def get_account(test_app: TestClient, account_uuid: str) -> accounts_models.Acco
 def test_open_account(test_app: TestClient, test_db: Database) -> None:
     full_name = "Test Account"
     open_account_request = accounts_models.OpenAccountRequest(full_name=full_name)
-    response = test_app.post(
-        "/accounts/open",
-        data=open_account_request.json()
-    )
+    response = test_app.post("/accounts/open", data=open_account_request.json())
     assert response.status_code == 200
 
     response_body = dict(response.json())
@@ -102,7 +94,9 @@ def test_get_all_account_by_uuid(test_app: TestClient, test_db: Database) -> Non
 
 def test_close_correct_account(test_app: TestClient, test_db: Database) -> None:
     account = create_account(test_app, "Test Account")
-    close_request = accounts_models.CloseAccountRequest(account_uuid=account.account_uuid)
+    close_request = accounts_models.CloseAccountRequest(
+        account_uuid=account.account_uuid
+    )
 
     response = test_app.put(
         "/accounts/close",
@@ -118,7 +112,9 @@ def test_close_correct_account(test_app: TestClient, test_db: Database) -> None:
 
 def test_close_closed_account(test_app: TestClient, test_db: Database) -> None:
     account = create_closed_account(test_app, "Test Account")
-    close_request = accounts_models.CloseAccountRequest(account_uuid=account.account_uuid)
+    close_request = accounts_models.CloseAccountRequest(
+        account_uuid=account.account_uuid
+    )
     response = test_app.put(
         "/accounts/close",
         data=close_request.json(),
@@ -133,8 +129,7 @@ def test_add_to_correct_account(test_app: TestClient, test_db: Database) -> None
     account = create_account(test_app, "Test Account")
 
     add_request = accounts_models.ChangeAccountBalanceRequest(
-        account_uuid=account.account_uuid,
-        change_amount=100500
+        account_uuid=account.account_uuid, change_amount=100500
     )
 
     response = test_app.put(
@@ -153,8 +148,7 @@ def test_add_to_closed_account(test_app: TestClient, test_db: Database) -> None:
     account = create_closed_account(test_app, "Test Account")
 
     add_request = accounts_models.ChangeAccountBalanceRequest(
-        account_uuid=account.account_uuid,
-        change_amount=100500
+        account_uuid=account.account_uuid, change_amount=100500
     )
 
     response = test_app.put(
@@ -167,7 +161,9 @@ def test_add_to_closed_account(test_app: TestClient, test_db: Database) -> None:
     assert not error_detail["result"]
 
 
-def test_substract_from_correct_account(test_app: TestClient, test_db: Database) -> None:
+def test_substract_from_correct_account(
+    test_app: TestClient, test_db: Database
+) -> None:
     account = create_account(test_app, "Test account", start_money=100)
     money_for_substraction = 50
 
@@ -207,7 +203,9 @@ def test_substract_from_closed_account(test_app: TestClient, test_db: Database) 
     assert error_detail["addition"] == [account.dict()]
 
 
-def test_substract_from_account_when_there_is_not_enough_money(test_app: TestClient, test_db: Database) -> None:
+def test_substract_from_account_when_there_is_not_enough_money(
+    test_app: TestClient, test_db: Database
+) -> None:
     account = create_account(test_app, "Test account", start_money=100)
     money_for_substraction = 150
 
@@ -243,9 +241,7 @@ def test_clear_account_holds(test_app: TestClient, test_db: Database) -> None:
         data=substract_request.json(),
     )
 
-    response = test_app.put(
-        "account_testing/clear_holds"
-    )
+    response = test_app.put("account_testing/clear_holds")
 
     assert response.status_code == 200
     account.balance -= money_for_substraction
