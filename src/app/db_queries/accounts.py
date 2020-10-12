@@ -4,9 +4,12 @@ from uuid import uuid4
 from sqlalchemy.exc import IntegrityError
 
 from app.db import accounts, database
-from app.models.accounts import (AccountDBSchema, AccountSchema,
-                                 ChangeAccountBalanceRequest,
-                                 CloseAccountRequest)
+from app.models.accounts import (
+    AccountDBSchema,
+    AccountSchema,
+    ChangeAccountBalanceRequest,
+    CloseAccountRequest,
+)
 
 
 async def create(account: AccountSchema) -> str:

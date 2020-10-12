@@ -28,7 +28,7 @@ def event_loop():
 
 @pytest.fixture()
 @pytest.mark.asyncio
-async def test_db(test_app, event_loop) -> Database:
+async def test_db(test_app: TestClient, event_loop) -> Database:
     from sqlalchemy import create_engine
 
     from app.db import database, metadata

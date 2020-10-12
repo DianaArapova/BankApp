@@ -4,6 +4,7 @@ from fastapi import APIRouter, FastAPI
 
 from app.db import database
 from app.models import accounts as account_models
+from app.settings import AppSettings
 from app.views import accounts, ping
 
 
@@ -16,7 +17,7 @@ def create_app() -> FastAPI:
     return app
 
 
-def configure_app_handlers(app, app_settings):
+def configure_app_handlers(app: FastAPI, app_settings: AppSettings) -> None:
     app.router.lifespan.startup_handlers.extend(
         [
             database.connect,

@@ -4,9 +4,14 @@ import logging
 from fastapi import HTTPException
 
 import app.db_queries.accounts as db_query_executor
-from app.models.accounts import (AccountDBSchema, AccountResponse,
-                                 AccountSchema, ChangeAccountBalanceRequest,
-                                 CloseAccountRequest, OpenAccountRequest)
+from app.models.accounts import (
+    AccountDBSchema,
+    AccountResponse,
+    AccountSchema,
+    ChangeAccountBalanceRequest,
+    CloseAccountRequest,
+    OpenAccountRequest,
+)
 
 logger = logging.getLogger(__name__)
 
